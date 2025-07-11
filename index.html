@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity Water Game</title>
+    <!-- Bootstrap CSS for responsiveness and layout -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6DQD1KQkQ1p2eQFh3yZC1og6LrN4p+8nbTov4+1p" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Title bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2E9DF7;">
+      <div class="container-fluid justify-content-center">
+        <span class="navbar-brand mb-0 h1 text-center w-100" style="font-weight:bold; letter-spacing:1px; font-size:2rem;">delivery: water</span>
+      </div>
+    </nav>
+
+    <!-- Instructions for beginners -->
+    <div id="instructions" class="alert alert-info mx-auto mt-3" style="max-width:600px;">
+      <strong>How to Play:</strong><br>
+      <ul class="mb-0 ps-4">
+        <li>Choose a difficulty to start.</li>
+        <li>Move the Jerry Can with your mouse or finger to collect water drops and waves.</li>
+        <li>Avoid rocks (they subtract points) and grab shields for protection.</li>
+        <li>Try to get the highest total score!</li>
+      </ul>
+    </div>
+
+    <!-- Top bar for score and timer -->
+    <div id="top-bar" class="d-flex flex-wrap align-items-center justify-content-center gap-3 my-2">
+        <span id="score" class="badge bg-primary fs-5">Score: 0</span>
+        <span id="total-score" class="badge bg-success fs-5">Total: 0</span>
+        <span id="timer" class="badge bg-warning text-dark fs-5">Time: 60</span>
+    </div>
+    <!-- Game Over message -->
+    <div id="game-over-message" class="alert alert-warning text-center mx-auto mt-3" style="display:none;max-width:600px;"></div>
+
+
+    <!-- Game controls: difficulty buttons and charity: water link -->
+    <div id="game-controls" class="d-flex flex-wrap gap-2 justify-content-center my-2">
+        <button id="easy-btn" class="btn btn-outline-primary">Easy</button>
+        <button id="medium-btn" class="btn btn-outline-success">Medium</button>
+        <button id="hard-btn" class="btn btn-outline-danger">Hard</button>
+        <button id="charitywater-btn" class="btn btn-warning">Visit charity: water</button>
+    </div>
+
+    <!-- Reset button, only shown during the game -->
+    <button id="reset-btn" class="btn btn-secondary d-block mx-auto my-2" style="display:none;">Reset Game</button>
+
+    <!-- Game element images (hidden, used for creating elements in JS) -->
+    <img id="img-drop" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4a7.png" alt="Drop" style="display:none;" />
+    <img id="img-wave" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f30a.png" alt="Wave" style="display:none;" />
+    <img id="img-rock" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1faa8.png" alt="Rock" style="display:none;" />
+    <img id="img-shield" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f6e1.png" alt="Shield" style="display:none;" />
+
+    <!-- Main game area -->
+    <div id="game-area" class="position-relative border rounded bg-white mx-auto" style="height: 350px; max-width: 100%; overflow: hidden;">
+        <img id="jerrycan" src="img/water-can.png" alt="Jerry Can" style="display: none; position: absolute; width: 80px; height: auto; pointer-events: none; z-index: 10;" />
+    </div>
+
+    <script src="script.js"></script>
+    <!-- Bootstrap JS (optional, for some components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-qQ2i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+</body>
+</html>
