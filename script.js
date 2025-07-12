@@ -60,62 +60,93 @@ function startTimer() {
 }
 
 
-// Difficulty button event listeners and game settings
-const easyBtn = document.getElementById('easy-btn');
-const mediumBtn = document.getElementById('medium-btn');
-const hardBtn = document.getElementById('hard-btn');
+let places = [];
+let unlockedPlace = 0;
+if (localStorage.getItem('unlockedPlace')) {
+  unlockedPlace = parseInt(localStorage.getItem('unlockedPlace')) || 0;
+}
 const gameControls = document.getElementById('game-controls');
 const resetBtn = document.getElementById('reset-btn');
-
-// Game settings for each difficulty
-const difficulties = {
-  easy: {
-    time: 30,
-    dropFreq: 1200,
-    rockFreq: 1500,
-    waveFreq: 6000,
-    shieldFreq: 9000,
-    dropScore: 1,
-    rockPenalty: -2,
-    waveScore: 10,
-    shieldProtect: 1
-  },
-  medium: {
-    time: 60,
-    dropFreq: 900,
-    rockFreq: 1100,
-    waveFreq: 5000,
-    shieldFreq: 8000,
-    dropScore: 2,
-    rockPenalty: -4,
-    waveScore: 20,
-    shieldProtect: 1
-  },
-  hard: {
-    time: 90,
-    dropFreq: 600,
-    rockFreq: 800,
-    waveFreq: 3500,
-    shieldFreq: 6000,
-    dropScore: 3,
-    rockPenalty: -8,
-    waveScore: 30,
-    shieldProtect: 1
-  }
-};
-
-let currentSettings = difficulties.easy;
+const jerryCan = document.getElementById('jerrycan');
+const gameArea = document.getElementById('game-area');
+let gameStarted = false;
+let currentSettings = null;
+let currentElementSpeed = 0;
 let shieldActive = false;
 let elementIntervals = [];
 
-// Game element speed for each difficulty (pixels per frame)
-// Increased speeds for more challenge
-const GAME_ELEMENT_SPEEDS = {
-  easy: 4,
-  medium: 6,
-  hard: 8
-};
-let currentElementSpeed = GAME_ELEMENT_SPEEDS.easy;
+// Dynamically load places.json and build place buttons
+fetch('places.json')
+  .then(res => res.json())
+  .then(data => {
+    places = data;
+    const placeList = document.getElementById('place-list');
+    // Remove any existing place items except the label
+    placeList.querySelectorAll('.place-item').forEach(el => el.remove());
+    places.forEach((place, idx) => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item place-item';
+      li.dataset.place = place.name;
+      li.id = `place-${idx}`;
+      const btn = document.createElement('button');
+      btn.className = `btn w-100 btn-outline-primary`;
+      btn.id = `place-btn-${idx}`;
+      btn.textContent = place.name;
+      if (place.difficulty === 'medium') btn.classList.replace('btn-outline-primary', 'btn-outline-success');
+      if (place.difficulty === 'hard') btn.classList.replace('btn-outline-primary', 'btn-outline-danger');
+      li.appendChild(btn);
+      placeList.appendChild(li);
+    });
+    setupPlaceLogic();
+  });
+
+function updatePlaceVisuals() {
+  places.forEach((place, idx) => {
+    const btn = document.getElementById(`place-btn-${idx}`);
+    const li = btn.closest('li');
+    if (idx > unlockedPlace) {
+      btn.classList.add('locked');
+      li.classList.add('locked');
+      btn.disabled = true;
+    } else {
+      btn.classList.remove('locked');
+      li.classList.remove('locked');
+      btn.disabled = false;
+    }
+  });
+}
+
+function setupPlaceLogic() {
+  updatePlaceVisuals();
+  places.forEach((place, idx) => {
+    const btn = document.getElementById(`place-btn-${idx}`);
+    btn.setAttribute('aria-label', `Start ${place.name} Level`);
+    btn.addEventListener('click', () => {
+      if (btn.disabled) return;
+      startGameWithPlace(idx);
+      window.currentPlaceIdx = idx;
+    });
+  });
+}
+
+function startGameWithPlace(idx) {
+  currentSettings = places[idx];
+  currentElementSpeed = currentSettings.elementSpeed;
+  updateScore(0);
+  updateTimer(currentSettings.time);
+  shieldActive = false;
+  startJerryCanFollow();
+  hideButtons();
+  clearGameElements();
+  startSpawningElements();
+  startTimer();
+  resetBtn.style.display = 'block';
+  // Disable all place buttons during the game
+  places.forEach((place, i) => {
+    document.getElementById(`place-btn-${i}`).disabled = true;
+  });
+  gameOverMessage.style.display = 'none';
+}
 
 function hideButtons() {
   gameControls.style.display = 'none';
@@ -123,31 +154,6 @@ function hideButtons() {
 function showButtons() {
   gameControls.style.display = 'flex';
 }
-
-function startGameWithDifficulty(diff) {
-  // Set settings
-  currentSettings = difficulties[diff];
-  currentElementSpeed = GAME_ELEMENT_SPEEDS[diff];
-  updateScore(0); // Reset in-game score at the start of a new game
-  updateTimer(currentSettings.time); // Reset timer to starting value
-  shieldActive = false;
-  startJerryCanFollow();
-  hideButtons();
-  clearGameElements();
-  startSpawningElements();
-  startTimer();
-  resetBtn.style.display = 'block'; // Show reset button during game
-  // Disable difficulty buttons during the game
-  easyBtn.disabled = true;
-  mediumBtn.disabled = true;
-  hardBtn.disabled = true;
-  // Hide game over message
-  gameOverMessage.style.display = 'none';
-}
-
-easyBtn.addEventListener('click', () => startGameWithDifficulty('easy'));
-mediumBtn.addEventListener('click', () => startGameWithDifficulty('medium'));
-hardBtn.addEventListener('click', () => startGameWithDifficulty('hard'));
 
 // Charity: water button event listener
 const charityBtn = document.getElementById('charitywater-btn');
@@ -158,9 +164,6 @@ charityBtn.addEventListener('click', () => {
 
 
 // Jerry Can logic
-const jerryCan = document.getElementById('jerrycan');
-const gameArea = document.getElementById('game-area');
-let gameStarted = false;
 
 // Function to show and enable the Jerry Can following the pointer
 function startJerryCanFollow() {
@@ -201,14 +204,6 @@ gameArea.addEventListener('touchmove', (event) => {
 }, { passive: false });
 
 // Start the game (show Jerry Can) when a difficulty is chosen
-function startGame() {
-  updateScore(0);
-  startJerryCanFollow();
-}
-
-easyBtn.addEventListener('click', startGame);
-mediumBtn.addEventListener('click', startGame);
-hardBtn.addEventListener('click', startGame);
 
 
 // Remove all game elements and stop intervals
@@ -231,10 +226,12 @@ function gameOver() {
   gameOverMessage.style.display = 'block';
   // Show confetti effect
   showConfetti();
-  // Re-enable difficulty buttons
-  easyBtn.disabled = false;
-  mediumBtn.disabled = false;
-  hardBtn.disabled = false;
+  // Unlock next place if available
+  if (typeof window.currentPlaceIdx === 'number' && window.currentPlaceIdx < places.length - 1) {
+    unlockedPlace = Math.max(unlockedPlace, window.currentPlaceIdx + 1);
+    localStorage.setItem('unlockedPlace', unlockedPlace);
+  }
+  updatePlaceVisuals();
 }
 
 // --- Confetti effect for game over ---
@@ -395,7 +392,7 @@ function startSpawningElements() {
     if (!gameStarted) return;
     const el = createGameElement('wave', document.getElementById('img-wave').src);
     animateElement(el, () => {
-      updateScore(score + currentSettings.waveScore);
+      updateScore(score + (currentSettings.dropScore * 10));
     });
   }, currentSettings.waveFreq);
   elementIntervals.push(waveInt);
@@ -433,16 +430,13 @@ resetBtn.addEventListener('click', () => {
   updateScore(0); // Reset in-game score only
   stopTimer(); // Stop the timer
   updateTimer(0); // Set timer to 0
-  // Re-enable difficulty buttons so user can start a new game
-  easyBtn.disabled = false;
-  mediumBtn.disabled = false;
-  hardBtn.disabled = false;
+  // Re-enable only unlocked place buttons so user can start a new game
+  updatePlaceVisuals();
+  // Clear current place index so gameOver logic doesn't trigger unlock
+  window.currentPlaceIdx = undefined;
 });
 
 // Accessibility: add aria-labels to buttons
 // (Beginner-friendly: this can be at the end of the file)
-easyBtn.setAttribute('aria-label', 'Start Easy Game');
-mediumBtn.setAttribute('aria-label', 'Start Medium Game');
-hardBtn.setAttribute('aria-label', 'Start Hard Game');
 resetBtn.setAttribute('aria-label', 'Reset Game');
 charityBtn.setAttribute('aria-label', 'Visit charity: water website');

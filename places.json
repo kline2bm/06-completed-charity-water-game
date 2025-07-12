@@ -1,0 +1,101 @@
+[
+  {
+    "name": "Ethiopia",
+    "time": 30,
+    "dropFreq": 1200,
+    "rockFreq": 1500,
+    "waveFreq": 6000,
+    "shieldFreq": 9000,
+    "dropScore": 1,
+    "rockPenalty": -2,
+    "elementSpeed": 4
+  },
+  {
+    "name": "Bangladesh",
+    "time": 35,
+    "dropFreq": 1000,
+    "rockFreq": 1300,
+    "waveFreq": 5500,
+    "shieldFreq": 8500,
+    "dropScore": 2,
+    "rockPenalty": -4,
+    "elementSpeed": 5
+  },
+  {
+    "name": "Uganda",
+    "time": 40,
+    "dropFreq": 850,
+    "rockFreq": 1100,
+    "waveFreq": 5000,
+    "shieldFreq": 8000,
+    "dropScore": 3,
+    "rockPenalty": -8,
+    "elementSpeed": 6
+  },
+  {
+    "name": "Malawi",
+    "time": 45,
+    "dropFreq": 750,
+    "rockFreq": 950,
+    "waveFreq": 4500,
+    "shieldFreq": 7500,
+    "dropScore": 4,
+    "rockPenalty": -5,
+    "elementSpeed": 7
+  },
+  {
+    "name": "Nepal",
+    "time": 50,
+    "dropFreq": 700,
+    "rockFreq": 900,
+    "waveFreq": 4000,
+    "shieldFreq": 7000,
+    "dropScore": 5,
+    "rockPenalty": -6,
+    "elementSpeed": 8
+  },
+  {
+    "name": "Cambodia",
+    "time": 55,
+    "dropFreq": 650,
+    "rockFreq": 850,
+    "waveFreq": 3500,
+    "shieldFreq": 6500,
+    "dropScore": 6,
+    "rockPenalty": -7,
+    "elementSpeed": 9
+  },
+  {
+    "name": "Rwanda",
+    "time": 60,
+    "dropFreq": 600,
+    "rockFreq": 800,
+    "waveFreq": 3000,
+    "shieldFreq": 6000,
+    "dropScore": 7,
+    "rockPenalty": -9,
+    "elementSpeed": 10
+  },
+  {
+    "name": "India",
+    "time": 65,
+    "dropFreq": 550,
+    "rockFreq": 750,
+    "waveFreq": 2500,
+    "shieldFreq": 5500,
+    "dropScore": 8,
+    "rockPenalty": -10,
+    "elementSpeed": 11
+  },
+  {
+    "name": "Mozambique",
+    "time": 70,
+    "dropFreq": 500,
+    "rockFreq": 700,
+    "waveFreq": 2000,
+    "shieldFreq": 5000,
+    "dropScore": 9,
+    "rockPenalty": -12,
+    "elementSpeed": 12
+  }
+]

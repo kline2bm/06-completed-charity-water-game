@@ -40,9 +40,18 @@
 
     <!-- Game controls: difficulty buttons and charity: water link -->
     <div id="game-controls" class="d-flex flex-wrap gap-2 justify-content-center my-2">
-        <button id="easy-btn" class="btn btn-outline-primary">Easy</button>
-        <button id="medium-btn" class="btn btn-outline-success">Medium</button>
-        <button id="hard-btn" class="btn btn-outline-danger">Hard</button>
+        <ul id="place-list" class="list-group list-group-horizontal flex-wrap justify-content-center" style="margin-bottom:0;">
+          <li class="list-group-item p-0 border-0 bg-transparent" style="font-weight:bold; color:#2E9DF7;">Places:</li>
+          <li class="list-group-item place-item" data-place="Ethiopia" id="place-0">
+            <button class="btn btn-outline-primary w-100" id="place-btn-0">Ethiopia</button>
+          </li>
+          <li class="list-group-item place-item" data-place="Bangladesh" id="place-1">
+            <button class="btn btn-outline-success w-100" id="place-btn-1" disabled>Bangladesh</button>
+          </li>
+          <li class="list-group-item place-item" data-place="Uganda" id="place-2">
+            <button class="btn btn-outline-danger w-100" id="place-btn-2" disabled>Uganda</button>
+          </li>
+        </ul>
         <button id="charitywater-btn" class="btn btn-warning">Visit charity: water</button>
     </div>
 

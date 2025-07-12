@@ -1,5 +1,10 @@
-#game-controls[style*="display: none"] {
-  display: none !important;
+#game-controls .locked button,
+#game-controls .locked {
+  opacity: 0.5;
+  filter: grayscale(0.7);
+  cursor: not-allowed !important;
+  pointer-events: none;
+  transition: opacity 0.2s, filter 0.2s;
 }
 
 /* Game element styles */
@@ -123,6 +128,8 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  /* charity: water brand font */
+  font-family: 'Proxima Nova', Arial, sans-serif;
 }
 
 img {
