@@ -8,7 +8,8 @@
     "shieldFreq": 9000,
     "dropScore": 1,
     "rockPenalty": -2,
-    "elementSpeed": 4
+    "elementSpeed": 2,
+    "music": "Digya"
   },
   {
     "name": "Bangladesh",
@@ -19,7 +20,8 @@
     "shieldFreq": 8500,
     "dropScore": 2,
     "rockPenalty": -4,
-    "elementSpeed": 5
+    "elementSpeed": 3,
+    "music": "Dhaka"
   },
   {
     "name": "Uganda",
@@ -30,7 +32,8 @@
     "shieldFreq": 8000,
     "dropScore": 3,
     "rockPenalty": -8,
-    "elementSpeed": 6
+    "elementSpeed": 4,
+    "music": "Night Cave"
   },
   {
     "name": "Malawi",
@@ -41,7 +44,8 @@
     "shieldFreq": 7500,
     "dropScore": 4,
     "rockPenalty": -5,
-    "elementSpeed": 7
+    "elementSpeed": 5,
+    "music": "Arid Foothills"
   },
   {
     "name": "Nepal",
@@ -52,7 +56,8 @@
     "shieldFreq": 7000,
     "dropScore": 5,
     "rockPenalty": -6,
-    "elementSpeed": 8
+    "elementSpeed": 6,
+    "music": "Desert City"
   },
   {
     "name": "Cambodia",
@@ -63,7 +68,8 @@
     "shieldFreq": 6500,
     "dropScore": 6,
     "rockPenalty": -7,
-    "elementSpeed": 9
+    "elementSpeed": 7,
+    "music": "Cambodian Odyssey"
   },
   {
     "name": "Rwanda",
@@ -74,7 +80,8 @@
     "shieldFreq": 6000,
     "dropScore": 7,
     "rockPenalty": -9,
-    "elementSpeed": 10
+    "elementSpeed": 8,
+    "music": "Trouble with Tribals"
   },
   {
     "name": "India",
@@ -85,7 +92,8 @@
     "shieldFreq": 5500,
     "dropScore": 8,
     "rockPenalty": -10,
-    "elementSpeed": 11
+    "elementSpeed": 9,
+    "music": "Jalandhar"
   },
   {
     "name": "Mozambique",
@@ -96,6 +104,7 @@
     "shieldFreq": 5000,
     "dropScore": 9,
     "rockPenalty": -12,
-    "elementSpeed": 12
+    "elementSpeed": 10,
+    "music": "AngloZulu"
   }
 ]

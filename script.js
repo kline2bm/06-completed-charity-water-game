@@ -83,18 +83,24 @@ fetch('places.json')
     const placeList = document.getElementById('place-list');
     // Remove any existing place items except the label
     placeList.querySelectorAll('.place-item').forEach(el => el.remove());
+    // Add per-place music audio elements
+    window.placeAudios = [];
     places.forEach((place, idx) => {
       const li = document.createElement('li');
-      li.className = 'list-group-item place-item';
+      li.className = 'place-item';
       li.dataset.place = place.name;
       li.id = `place-${idx}`;
       const btn = document.createElement('button');
-      btn.className = `btn w-100 btn-outline-primary`;
+      btn.className = 'btn btn-outline-primary';
       btn.id = `place-btn-${idx}`;
       btn.textContent = place.name;
-      if (place.difficulty === 'medium') btn.classList.replace('btn-outline-primary', 'btn-outline-success');
-      if (place.difficulty === 'hard') btn.classList.replace('btn-outline-primary', 'btn-outline-danger');
+      // Music property required in places.json for each place
+      const audio = document.createElement('audio');
+      audio.src = `https://incompetech.com/music/royalty-free/mp3-royaltyfree/${place.music}.mp3`;
+      audio.preload = 'auto';
+      window.placeAudios[idx] = audio;
       li.appendChild(btn);
+      li.appendChild(audio);
       placeList.appendChild(li);
     });
     setupPlaceLogic();
@@ -146,6 +152,12 @@ function startGameWithPlace(idx) {
     document.getElementById(`place-btn-${i}`).disabled = true;
   });
   gameOverMessage.style.display = 'none';
+  // Play place music from beginning
+  if (window.placeAudios && window.placeAudios[idx]) {
+    window.placeAudios.forEach(a => { a.pause(); a.currentTime = 0; });
+    window.placeAudios[idx].currentTime = 0;
+    window.placeAudios[idx].play();
+  }
 }
 
 function hideButtons() {
@@ -155,12 +167,6 @@ function showButtons() {
   gameControls.style.display = 'flex';
 }
 
-// Charity: water button event listener
-const charityBtn = document.getElementById('charitywater-btn');
-charityBtn.addEventListener('click', () => {
-  // Open charity: water website in a new tab
-  window.open('https://www.charitywater.org/', '_blank');
-});
 
 
 // Jerry Can logic
@@ -219,6 +225,8 @@ function gameOver() {
   showButtons();
   clearGameElements();
   resetBtn.style.display = 'none'; // Hide reset button when game ends
+  // Stop all place music
+  if (window.placeAudios) window.placeAudios.forEach(a => { a.pause(); a.currentTime = 0; });
   // Add in-game score to total, reset in-game score, and save total
   updateTotalScore(totalScore + score);
   // Show game over message
@@ -322,6 +330,19 @@ function createGameElement(type, imgSrc) {
   el.style.left = `${gameArea.offsetWidth}px`;
   el.style.top = `${top}px`;
   gameArea.appendChild(el);
+  // Check for overlap with existing elements
+  const others = Array.from(document.querySelectorAll('.game-element')).filter(e => e !== el);
+  let overlaps = false;
+  for (let other of others) {
+    if (checkCollision(el, other)) {
+      overlaps = true;
+      break;
+    }
+  }
+  if (overlaps) {
+    el.remove();
+    return null;
+  }
   return el;
 }
 
@@ -430,6 +451,8 @@ resetBtn.addEventListener('click', () => {
   updateScore(0); // Reset in-game score only
   stopTimer(); // Stop the timer
   updateTimer(0); // Set timer to 0
+  // Stop all place music
+  if (window.placeAudios) window.placeAudios.forEach(a => { a.pause(); a.currentTime = 0; });
   // Re-enable only unlocked place buttons so user can start a new game
   updatePlaceVisuals();
   // Clear current place index so gameOver logic doesn't trigger unlock
@@ -439,4 +462,3 @@ resetBtn.addEventListener('click', () => {
 // Accessibility: add aria-labels to buttons
 // (Beginner-friendly: this can be at the end of the file)
 resetBtn.setAttribute('aria-label', 'Reset Game');
-charityBtn.setAttribute('aria-label', 'Visit charity: water website');
